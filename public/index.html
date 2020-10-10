@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grocery App</title>
+  <style>
+    #signOut{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Grocery App</h1>
+  <form id='signUpForm'>
+    <p>
+      <label for='username'>Username: </label>
+      <input type="text" name='signUpUser' id="signUpUser">
+    </p>
+    <p>
+    <button id="signUp">Sign Up</button>
+    </p>
+  </form>
+  <hr>
+  </form>
+  <form id='signInForm'>
+    <p>
+      <label for='newUsername'>New Username: </label>
+      <input type="text" name='username' id="username">
+    </p>
+    <p>
+    <button id="signIn">Sign In</button>
+    </p>
+      </form>
+      <button id="signOut">Sign Out</button>
+  <hr>
+
+      <form>
+  <label for='groceries'>
+    Grocery Item
+  </label>
+  <input type='text' name='grocery' id='grocery'>
+  </p>
+      <p>
+        <label for='quantity'>
+          Quantity
+        </label>
+        <input type='number' name='quantity' id='quantity'>
+      </p>
+  <p>
+  <button id="addGrocery">Add Grocery Item</button>
+  </p>
+  </form>
+  <ol id="listGroc"></ol>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+
+    const checkUser = () => {
+      if (localStorage.getItem('user')) {
+        axios.get(`/api/users/${localStorage.getItem('user')}`)
+        .then(({ data }) => {
+          localStorage.setItem('user', data.user.id)
+
+          data.groceries.forEach(grocery => {
+          let groceryElem = document.createElement('li')
+          groceryElem.textContent = `
+          Item: ${grocery.name} | Quantity : ${grocery.quantity}`
+            document.getElementById('listGroc').append(groceryElem)
+        }) 
+      })
+      .catch(err => console.log(err))
+    }
+
+    document.getElementById('signUp').addEventListener('click', event => {
+      event.preventDefault()
+      axios.post('/api/users')
+      username: document.getElementById('signUpUser').value
+      .then(({ data }) => {
+        localStorage.setItem('user', data.insertId)
+        document.getElementById('signUpForm').style.display = 'none'
+        document.getElementById('signInForm').style.display = 'none'
+        document.getElementById('signOut').style.display = 'block'
+      })
+      .catch(err => console.log(err))
+    })
+
+    document.getElementById('signIn').addEventListener('click', event => {
+      event.preventDefault()
+      axios.get(`/api/users/${document.getElementById('username').value}`, {
+        name: document.getElementById('username').value
+      })
+      .then(({ data }) => {
+        localStorage.setItem('user', data.user.id)
+        data.groceries.forEach(grocery => {
+          let groceryElem = document.createElement('li')
+          groceryElem.textContent = `
+          Item: ${grocery.name} | Quantity : ${grocery.quantity}`
+          document.getElementById('listGroc').append(groceryElem)
+        })
+        document.getElementById('username').value = ''
+        document.getElementById('signInForm').style.display='none' 
+        document.getElementById('signOut').style.display = 'block'
+      })
+      .catch(err => console.log(err))
+    })
+
+    document.getElementById('signOut').addEventListener('click', () => {
+      localStorage.removeItem('user')
+      document.getElementById('listGroc').innerHTML = ''
+      document.getElementById('signUpForm').style.display = 'block'
+      document.getElementById('signInForm').style.display = 'block'
+      document.getElementById('signOut').style.display = 'hidden'
+    })
+
+    document.getElementById('addGrocery').addEventListener('click', event => {
+      event.preventDefault()
+      axios.post('/api/groceries', {
+        name: document.getElementById('grocery').value,
+        quantity: document.getElementById('quantity').value,
+        userid: parseInt(localStorage.getItem('user'))
+      })
+        .then(() => {
+          let groceryElem = document.createElement('li')
+          groceryElem.textContent = `
+          Item: ${grocery.name} | Quantity : ${grocery.quantity}`
+          document.getElementById('listGroc').append(groceryElem)
+          document.getElementById('grocery').value = ''
+          document.getElementById('quantity').value = null
+        })
+        .catch(err => console.log(err))
+        })
+
+    const getGroceries = () => {
+      axios.get('/api/groceries')
+        .then(({ data }) => {
+          document.getElementById('listGroc').innerHTML = ''
+          data.forEach(grocery => {
+            let groceryElem = document.createElement('li')
+            groceryElem.textContent = `${grocery.name} | ${grocery.quantity} `
+            document.getElementById('listGroc').append(groceryElem)
+          })
+        })
+        .catch(err => console.log(err))
+    }
+
+    checkUser()
+  </script>
+</body>
+</html>
