@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const db = require('../db')
+// const db = require('../db')
+const orm = require('../orm')
 
 // // GET all groceries
 // router.get('/groceries', (req, res) => {
@@ -9,12 +10,15 @@ const db = require('../db')
 //   })
 // })
 
-// POST all groceries
+// POST a grocery
 router.post('/groceries', (req, res) => {
-  db.query('INSERT INTO groceries SET ?', req.body, err => {
-    if (err) { console.log(err) }
+  orm.createOne('groceries', req.body, info => {
     res.sendStatus(200)
   })
+  // db.query('INSERT INTO groceries SET ?', req.body, err => {
+  //   if (err) { console.log(err) }
+  //   res.sendStatus(200)
+  // })
 })
 
 module.exports = router

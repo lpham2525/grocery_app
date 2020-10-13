@@ -14,44 +14,33 @@
   <h1>Grocery App</h1>
   <form id='signUpForm'>
     <p>
-      <label for='username'>Username: </label>
+      <label for='newUsername'>New Username: </label>
       <input type="text" name='signUpUser' id="signUpUser">
     </p>
-    <p>
     <button id="signUp">Sign Up</button>
-    </p>
-  </form>
-  <hr>
   </form>
   <form id='signInForm'>
     <p>
-      <label for='newUsername'>New Username: </label>
+      <label for='username'>Username: </label>
       <input type="text" name='username' id="username">
     </p>
-    <p>
     <button id="signIn">Sign In</button>
-    </p>
-      </form>
-      <button id="signOut">Sign Out</button>
+  </form>
+    <button id="signOut">Sign Out</button>
   <hr>
 
-      <form>
-  <label for='groceries'>
-    Grocery Item
-  </label>
-  <input type='text' name='grocery' id='grocery'>
-  </p>
-      <p>
-        <label for='quantity'>
-          Quantity
-        </label>
-        <input type='number' name='quantity' id='quantity'>
-      </p>
-  <p>
-  <button id="addGrocery">Add Grocery Item</button>
-  </p>
-  </form>
-  <ol id="listGroc"></ol>
+  <form>
+    <p>
+      <label for='groceries'>Grocery Item</label>
+      <input type='text' name='grocery' id='grocery'>
+    </p>
+    <p>
+      <label for='quantity'>Quantity</label>
+      <input type='number' name='quantity' id='quantity'>
+    </p>
+    <button id="addGrocery">Add Grocery Item</button>
+    </form>
+    <ol id="listGroc"></ol>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
 
@@ -65,11 +54,15 @@
           let groceryElem = document.createElement('li')
           groceryElem.textContent = `
           Item: ${grocery.name} | Quantity : ${grocery.quantity}`
-            document.getElementById('listGroc').append(groceryElem)
+          document.getElementById('listGroc').append(groceryElem)
         }) 
+          document.getElementById('signUpForm').style.display = 'none'
+          document.getElementById('signInForm').style.display = 'none'
+          document.getElementById('signOut').style.display = 'block'
       })
       .catch(err => console.log(err))
     }
+  }
 
     document.getElementById('signUp').addEventListener('click', event => {
       event.preventDefault()
@@ -86,9 +79,7 @@
 
     document.getElementById('signIn').addEventListener('click', event => {
       event.preventDefault()
-      axios.get(`/api/users/${document.getElementById('username').value}`, {
-        name: document.getElementById('username').value
-      })
+      axios.get(`/api/users/${document.getElementById('username').value}`)
       .then(({ data }) => {
         localStorage.setItem('user', data.user.id)
         data.groceries.forEach(grocery => {
@@ -97,7 +88,7 @@
           Item: ${grocery.name} | Quantity : ${grocery.quantity}`
           document.getElementById('listGroc').append(groceryElem)
         })
-        document.getElementById('username').value = ''
+        document.getElementById('signUpForm').style.display = 'none'
         document.getElementById('signInForm').style.display='none' 
         document.getElementById('signOut').style.display = 'block'
       })
@@ -122,26 +113,11 @@
         .then(() => {
           let groceryElem = document.createElement('li')
           groceryElem.textContent = `
-          Item: ${grocery.name} | Quantity : ${grocery.quantity}`
+          ${document.getElementById('grocery').value} | Quantity : ${document.getElementById('quantity').value}`
           document.getElementById('listGroc').append(groceryElem)
-          document.getElementById('grocery').value = ''
-          document.getElementById('quantity').value = null
         })
         .catch(err => console.log(err))
         })
-
-    const getGroceries = () => {
-      axios.get('/api/groceries')
-        .then(({ data }) => {
-          document.getElementById('listGroc').innerHTML = ''
-          data.forEach(grocery => {
-            let groceryElem = document.createElement('li')
-            groceryElem.textContent = `${grocery.name} | ${grocery.quantity} `
-            document.getElementById('listGroc').append(groceryElem)
-          })
-        })
-        .catch(err => console.log(err))
-    }
 
     checkUser()
   </script>
