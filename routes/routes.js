@@ -1,3 +1,5 @@
+// Will need to add the rest of the routes, easily adaptable from the previous iteration
+
 var db =require('../models');
 
 module.exports = (app) => {
