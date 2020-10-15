@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const { query } = require('../db')
-// const db = require('../db')
+// const { query } = require('../db')
+const db = require('../db')
 const orm = require('../orm')
 
 // GET all users
