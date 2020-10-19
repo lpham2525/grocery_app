@@ -66,8 +66,8 @@
 
     document.getElementById('signUp').addEventListener('click', event => {
       event.preventDefault()
-      axios.post('/api/users')
-      username: document.getElementById('signUpUser').value
+      axios.post('/api/users', {
+      username: document.getElementById('signUpUser').value})
       .then(({ data }) => {
         localStorage.setItem('user', data.insertId)
         document.getElementById('signUpForm').style.display = 'none'
@@ -100,7 +100,7 @@
       document.getElementById('listGroc').innerHTML = ''
       document.getElementById('signUpForm').style.display = 'block'
       document.getElementById('signInForm').style.display = 'block'
-      document.getElementById('signOut').style.display = 'hidden'
+      document.getElementById('signOut').style.display = 'none'
     })
 
     document.getElementById('addGrocery').addEventListener('click', event => {

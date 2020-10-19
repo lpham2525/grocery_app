@@ -2,7 +2,7 @@ const router = require('express').Router()
 // const db = require('../db')
 const orm = require('../orm')
 
-// // GET all groceries
+// GET all groceries
 // router.get('/groceries', (req, res) => {
 //   db.query('SELECT * FROM groceries', (err, groceries) => {
 //     if (err) { console.log(err) }

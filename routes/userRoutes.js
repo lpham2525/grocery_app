@@ -1,14 +1,14 @@
 const router = require('express').Router()
-const { query } = require('../db')
+// const { query } = require('../db')
 // const db = require('../db')
 const orm = require('../orm')
 
 // GET all users
-router.get('/users', (req, res) => {
-  orm.getAll('users', (users) => {
-    console.log(users)
-  })
-})
+// router.get('/users', (req, res) => {
+//   orm.getAll('users', (users) => {
+//     console.log(users)
+//   })
+// })
 
 // GET one user
 router.get('/users/:selector', (req, res) => {
@@ -22,7 +22,7 @@ router.get('/users/:selector', (req, res) => {
   orm.getAllWhere('users', query, data => {
     let user = data[0]
     orm.getAllWhere('groceries', { userid: user.id }, groceries => {
-      res.json({user, groceries })
+      res.json({ user, groceries })
     })
   })
 

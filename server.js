@@ -9,4 +9,14 @@ app.use(express.json())
 
 app.use(require('./routes'))
 
-app.listen(process.env.PORT || 3000, () => console.log('Server is running...'))
+// var PORT = process.env.PORT || 3000
+
+// require('./routes/routes')(app)
+// var db = require('./models')
+// db.sequelize.sync().then(function () {
+//   app.listen(process.env.PORT || PORT, function () {
+//     console.log("listening on port " + PORT)
+//   })
+// })
+
+app.listen(process.env.PORT || 3000, () => console.log('server running'))
