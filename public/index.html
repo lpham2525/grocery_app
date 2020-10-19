@@ -117,7 +117,7 @@
         .then(() => {
           let groceryElem = document.createElement('li')
           groceryElem.textContent = `
-          ${document.getElementById('grocery').value} | Quantity : ${document.getElementById('quantity').value}`
+          Item: ${document.getElementById('grocery').value} | Quantity : ${document.getElementById('quantity').value}`
           document.getElementById('listGroc').append(groceryElem)
           document.getElementById('grocery').value = ''
           document.getElementById('quantity').value =''
